@@ -1,0 +1,56 @@
+services:
+  - type: worker
+    name: rcm-discord-bot
+    runtime: docker
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: warn
+      - key: WEB_HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 3000
+      - key: PORT_RETRY_ATTEMPTS
+        value: 5
+      - key: AUTO_MIGRATE
+        value: "true"
+      - key: DISCORD_TOKEN
+        sync: false
+      - key: CLIENT_ID
+        sync: false
+      - key: GUILD_ID
+        sync: false
+      - key: OWNER_IDS
+        sync: false
+      - key: POSTGRES_URL
+        fromDatabase:
+          name: rcm-postgres
+          property: connectionString
+      - key: POSTGRES_HOST
+        fromDatabase:
+          name: rcm-postgres
+          property: host
+      - key: POSTGRES_PORT
+        fromDatabase:
+          name: rcm-postgres
+          property: port
+      - key: POSTGRES_DB
+        fromDatabase:
+          name: rcm-postgres
+          property: database
+      - key: POSTGRES_USER
+        fromDatabase:
+          name: rcm-postgres
+          property: user
+      - key: POSTGRES_PASSWORD
+        fromDatabase:
+          name: rcm-postgres
+          property: password
+
+databases:
+  - name: rcm-postgres
+    plan: free
+    databaseName: titanbot
+    user: titanbot
